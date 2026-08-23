@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://bsqql2406vsgy"]
+
+[ext_resource type="Script" uid="uid://br2ri8pt3a2qh" path="res://player.gd" id="1_wtcfe"]
+[ext_resource type="Texture2D" uid="uid://hcg1mc3kt34i" path="res://icon.svg" id="2_0e48y"]
+[ext_resource type="Script" uid="uid://gbx2iiqi7yxy" path="res://camera_2d.gd" id="2_epypp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_30ebg"]
+size = Vector2(20, 30)
+
+[node name="Node2D" type="Node2D" unique_id=814731311]
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=1890580394]
+script = ExtResource("1_wtcfe")
+
+[node name="Camera2D" type="Camera2D" parent="CharacterBody2D" unique_id=942299931]
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
+rotation_smoothing_speed = 10.0
+script = ExtResource("2_epypp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1444007434]
+shape = SubResource("RectangleShape2D_30ebg")
+
+[node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D" unique_id=871681926]
+position = Vector2(1.3709068e-06, 5.9604645e-07)
+scale = Vector2(0.15624997, 0.23437499)
+texture = ExtResource("2_0e48y")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1463456006]
+position = Vector2(532, 305)
+texture = ExtResource("2_0e48y")
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=368940615]
+position = Vector2(525, -298)
+texture = ExtResource("2_0e48y")
+
+[node name="Sprite2D3" type="Sprite2D" parent="." unique_id=1776948067]
+position = Vector2(-290, -501)
+texture = ExtResource("2_0e48y")
+
+[node name="Sprite2D4" type="Sprite2D" parent="." unique_id=1781927582]
+position = Vector2(-531, 339)
+texture = ExtResource("2_0e48y")
+
+[node name="Sprite2D5" type="Sprite2D" parent="." unique_id=219578878]
+position = Vector2(-542, -120)
+texture = ExtResource("2_0e48y")
+
+[node name="Sprite2D6" type="Sprite2D" parent="." unique_id=1345986075]
+position = Vector2(19, 458)
+texture = ExtResource("2_0e48y")
+
+[node name="Sprite2D7" type="Sprite2D" parent="." unique_id=828709771]
+position = Vector2(146, -455)
+texture = ExtResource("2_0e48y")
+
+[node name="Sprite2D8" type="Sprite2D" parent="." unique_id=1415048756]
+position = Vector2(311, -8)
+texture = ExtResource("2_0e48y")
