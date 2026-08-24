@@ -3,20 +3,20 @@ extends CharacterBody2D
 # ── Tunables ──────────────────────────────────────────────
 @export_group("Engine")
 @export var max_speed: float = 600.0
-@export var acceleration: float = 900.0      # how fast you reach max speed
-@export var braking: float = 1400.0          # deceleration when reversing input
-@export var friction: float = 500.0          # deceleration with no input (coasting)
-@export var reverse_speed_mult: float = 0.5  # reverse is slower than forward
+@export var acceleration: float = 900.0 # how fast you reach max speed
+@export var braking: float = 1400.0 # deceleration when reversing input
+@export var friction: float = 500.0 # deceleration with no input (coasting)
+@export var reverse_speed_mult: float = 0.5 # reverse is slower than forward
 
 @export_group("Steering")
-@export var max_steer_angle: float = 3.2     # radians/sec at full lock, low speed
+@export var max_steer_angle: float = 3.2 # radians/sec at full lock, low speed
 @export var min_speed_to_steer: float = 20.0 # below this, steering does nothing (no pivoting in place)
-@export var steer_speed_curve: float = 0.6   # how much steering falls off as speed rises (0=no falloff, 1=heavy falloff)
+@export var steer_speed_curve: float = 0.6 # how much steering falls off as speed rises (0=no falloff, 1=heavy falloff)
 
 @export_group("Grip / Drift")
-@export var traction_normal: float = 12.0    # how fast velocity aligns to facing (higher = grippier)
-@export var traction_drift: float = 2.5      # traction while handbraking/drifting
-@export var drift_input: String = "drift"    # action name, e.g. Shift or Space
+@export var traction_normal: float = 12.0 # how fast velocity aligns to facing (higher = grippier)
+@export var traction_drift: float = 2.5 # traction while handbraking/drifting
+@export var drift_input: String = "drift" # action name, e.g. Shift or Space
 
 # ── Internal state ────────────────────────────────────────
 var forward_input: float = 0.0
@@ -53,7 +53,7 @@ func _apply_engine_force(delta: float) -> void:
 		velocity += forward_dir * (new_forward_speed - current_forward_speed)
 	else:
 		# Coast to a stop with friction
-		var decel : float = min(friction * delta, abs(current_forward_speed))
+		var decel: float = min(friction * delta, abs(current_forward_speed))
 		velocity -= forward_dir * decel * sign(current_forward_speed)
 
 

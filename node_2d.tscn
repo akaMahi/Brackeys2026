@@ -10,13 +10,15 @@ size = Vector2(20, 30)
 [node name="Node2D" type="Node2D" unique_id=814731311]
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=1890580394]
+scale = Vector2(2.5, 2.5)
 script = ExtResource("1_wtcfe")
 
-[node name="Camera2D" type="Camera2D" parent="CharacterBody2D" unique_id=942299931]
+[node name="Camera2D" type="Camera2D" parent="CharacterBody2D" unique_id=942299931 node_paths=PackedStringArray("target")]
+scale = Vector2(0.99999994, 0.99999994)
 position_smoothing_enabled = true
 position_smoothing_speed = 8.0
-rotation_smoothing_speed = 10.0
 script = ExtResource("2_epypp")
+target = NodePath("..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=1444007434]
 shape = SubResource("RectangleShape2D_30ebg")

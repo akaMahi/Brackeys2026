@@ -6,15 +6,15 @@ extends Camera2D
 @export var target: Node2D
 
 @export_group("Zoom")
-@export var zoom_min: float = 1.4          # zoomed IN at low speed (more detail)
-@export var zoom_max: float = 0.85         # zoomed OUT at high speed (more visibility)
-@export var zoom_speed_reference: float = 600.0  # speed at which zoom_max is reached (match your car's max_speed)
-@export var zoom_smoothing: float = 3.0    # how fast zoom transitions
+@export var zoom_min: float = 1.4 # zoomed IN at low speed (more detail)
+@export var zoom_max: float = 0.85 # zoomed OUT at high speed (more visibility)
+@export var zoom_speed_reference: float = 600.0 # speed at which zoom_max is reached (match your car's max_speed)
+@export var zoom_smoothing: float = 3.0 # how fast zoom transitions
 
 @export_group("Look-ahead")
-@export var lookahead_max: float = 220.0   # pixels the camera pushes toward travel direction at full speed
+@export var lookahead_max: float = 220.0 # pixels the camera pushes toward travel direction at full speed
 @export var lookahead_smoothing: float = 4.0
-@export var lookahead_vertical_bias: float = 1.3  # push extra bias upward since vertical games need forward sight more than side sight
+@export var lookahead_vertical_bias: float = 1.3 # push extra bias upward since vertical games need forward sight more than side sight
 
 var _current_zoom: float = 1.0
 var _current_lookahead: Vector2 = Vector2.ZERO
@@ -49,7 +49,7 @@ func _process(delta: float) -> void:
 	# ── Look-ahead offset ──
 	var travel_dir: Vector2 = velocity.normalized() if speed > 10.0 else Vector2.ZERO
 	var target_lookahead: Vector2 = travel_dir * lookahead_max * speed_ratio
-	target_lookahead.y *= lookahead_vertical_bias  # bias toward seeing what's ahead vertically
+	target_lookahead.y *= lookahead_vertical_bias # bias toward seeing what's ahead vertically
 
 	_current_lookahead = _current_lookahead.lerp(target_lookahead, clamp(lookahead_smoothing * delta, 0.0, 1.0))
 	offset = _current_lookahead
