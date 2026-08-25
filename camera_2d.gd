@@ -95,7 +95,6 @@ func _update_lookahead(car_velocity: Vector2, delta: float) -> void:
 
 func _update_rotation_sync(delta: float) -> void:
 	var car_rotation: float = target.rotation
-	print("turning: ", _is_turning, " | rotation: ", rotation, " | car rotation: ", car_rotation)
 	var delta_rotation: float = wrapf(car_rotation - _prev_car_rotation, -PI, PI)
 	var angular_speed: float = abs(delta_rotation) / delta
 	_prev_car_rotation = car_rotation
