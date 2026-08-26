@@ -889,9 +889,10 @@ position_smoothing_enabled = true
 position_smoothing_speed = 8.0
 script = ExtResource("2_epypp")
 target = NodePath("..")
+zoom_min = 1.0
 zoom_max = 0.7
 zoom_speed_reference = 1000.0
-turn_threshold = 0.3
+rotation_sync_duration = 1.0
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=226266647]
 z_index = -100

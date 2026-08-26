@@ -74,15 +74,16 @@ func _apply_steering(delta: float) -> void:
 
 
 func _apply_traction(delta: float) -> void:
-	# This is THE key to good car feel: blend current velocity toward
-	# the direction the car is facing. High traction = grippy arcade car.
-	# Low traction (while drifting) = velocity keeps its old direction
-	# while the car rotates, creating a slide.
 	var forward_dir := Vector2.UP.rotated(rotation)
-	var speed := velocity.length()
-	if speed < 1.0:
+	if velocity.length() < 1.0:
 		return
 
+	# Signed, not unsigned: preserves whether you're moving forward or
+	# backward, and only kills the *lateral* (sideways/drift) component.
+	# Using velocity.length() here always points target_velocity forward,
+	# even while reversing — which fights the engine's reverse force.
+	var signed_forward_speed := velocity.dot(forward_dir)
+	var target_velocity := forward_dir * signed_forward_speed
+
 	var current_traction := traction_drift if is_drifting else traction_normal
-	var target_velocity := forward_dir * speed
 	velocity = velocity.lerp(target_velocity, clamp(current_traction * delta, 0.0, 1.0))
