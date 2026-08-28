@@ -29,7 +29,7 @@ extends Camera2D
 @export var rotation_sync_enabled: bool = true
 @export var turn_threshold: float = 0.15 # rad/sec — above this counts as "turning"
 @export var straight_hold_time: float = 0.25 # seconds of straight driving before syncing starts
-@export var rotation_sync_duration: float = 0.4 # seconds — how long the ease back to 0 always takes, regardless of offset size
+@export var rotation_sync_speed: float = 3.0 # rad/sec — how fast rotation eases back once syncing
 
 var _current_zoom: float = 1.0
 var _current_lookahead: Vector2 = Vector2.ZERO
@@ -38,10 +38,6 @@ var _prev_car_rotation: float = 0.0
 var _is_turning: bool = false
 var _straight_timer: float = 0.0
 var _locked_local_rotation: float = 0.0 # camera's local rotation, held constant while turning
-
-var _is_syncing: bool = false
-var _sync_start_rotation: float = 0.0 # rotation value captured at the moment syncing began
-var _sync_elapsed: float = 0.0 # time elapsed since syncing began
 
 
 func _ready() -> void:
@@ -99,6 +95,7 @@ func _update_lookahead(car_velocity: Vector2, delta: float) -> void:
 
 func _update_rotation_sync(delta: float) -> void:
 	var car_rotation: float = target.rotation
+	print("turning: ", _is_turning, " | rotation: ", rotation, " | car rotation: ", car_rotation)
 	var delta_rotation: float = wrapf(car_rotation - _prev_car_rotation, -PI, PI)
 	var angular_speed: float = abs(delta_rotation) / delta
 	_prev_car_rotation = car_rotation
@@ -111,7 +108,6 @@ func _update_rotation_sync(delta: float) -> void:
 			# Turn just started this tick — lock the camera's current local rotation.
 			_locked_local_rotation = rotation
 		_straight_timer = 0.0
-		_is_syncing = false # cancel any in-progress sync, we're turning again
 		# Actively cancel the car's rotation change so the camera's LOCAL rotation
 		# stays pinned, which keeps the GLOBAL (visual) rotation frozen too.
 		_locked_local_rotation -= delta_rotation
@@ -119,18 +115,7 @@ func _update_rotation_sync(delta: float) -> void:
 	else:
 		_straight_timer += delta
 		if _straight_timer >= straight_hold_time:
-			if not _is_syncing:
-				# Just started syncing this tick — capture where we're syncing FROM
-				# and reset the clock, so the ease always takes rotation_sync_duration
-				# seconds total no matter how large the offset is.
-				_is_syncing = true
-				_sync_start_rotation = rotation
-				_sync_elapsed = 0.0
-
-			_sync_elapsed += delta
-			var t: float = clamp(_sync_elapsed / rotation_sync_duration, 0.0, 1.0)
-			rotation = lerp_angle(_sync_start_rotation, 0.0, t)
-
-			if t >= 1.0:
-				_is_syncing = false
+			# Driving straight long enough — ease local rotation back to 0,
+			# letting the inherited parent (car) rotation show through.
+			rotation = lerp_angle(rotation, 0.0, clamp(rotation_sync_speed * delta, 0.0, 1.0))
 		# else: still in the grace window, hold rotation exactly where it is (no change).

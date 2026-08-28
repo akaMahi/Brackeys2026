@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://c7865ifb7ksp4"]
+
+[ext_resource type="Texture2D" uid="uid://hcg1mc3kt34i" path="res://Sprites/icon.svg" id="1_a22dp"]
+[ext_resource type="Script" uid="uid://ci0opj4n2wwm4" path="res://Scripts/New_scripts/health_pickup.gd" id="1_s3hhi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s3hhi"]
+size = Vector2(59, 62)
+
+[node name="Area2D" type="Area2D"]
+modulate = Color(0.4627451, 1, 0.24313726, 1)
+script = ExtResource("1_s3hhi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_s3hhi")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_a22dp")

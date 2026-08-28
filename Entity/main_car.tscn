@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://didopyw4p185v"]
+
+[ext_resource type="Script" uid="uid://du6bfe5f68qxf" path="res://Scripts/New_scripts/player_car_new.gd" id="1_33x2g"]
+[ext_resource type="Texture2D" uid="uid://cfjvjrcci272v" path="res://Sprites/main car 2.png" id="2_h52pu"]
+[ext_resource type="AudioStream" uid="uid://bgrcxedeynxav" path="res://SFX/Muscle_Car_Gear0_Accelerate (Loop).wav" id="2_jofpt"]
+[ext_resource type="AudioStream" uid="uid://dy1q4fd3gt0wm" path="res://SFX/Tire_Screech-002.wav" id="3_ut8fc"]
+[ext_resource type="AudioStream" uid="uid://bqdqmu0huv366" path="res://SFX/Muscle_Car_ChangeGear-003.wav" id="4_ut8fc"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_33x2g"]
+radius = 10.914094
+height = 34.285713
+
+[node name="Main Car" type="CharacterBody2D" unique_id=1656651013 groups=["player"]]
+scale = Vector2(2.4618762, 2.5)
+script = ExtResource("1_33x2g")
+acceleration = 200.0
+braking = 400.0
+friction = 100.0
+reverse_speed_mult = 0.8
+steer_speed_curve = 0.5
+skid_mark_color = Color(0.050980393, 0.050980393, 0.050980393, 0.7921569)
+engine_sound = ExtResource("2_jofpt")
+drift_sound = ExtResource("3_ut8fc")
+knockback_strength = 0.1
+knockback_rotation_kick = 0.2
+crash_sound = ExtResource("4_ut8fc")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1708404114]
+z_index = 2
+scale = Vector2(0.13670123, 0.1367012)
+texture = ExtResource("2_h52pu")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=821721630]
+scale = Vector2(0.85600036, 1.4000001)
+shape = SubResource("CapsuleShape2D_33x2g")
+
+[connection signal="died" from="." to="." method="_on_died"]
+[connection signal="health_changed" from="." to="." method="_on_health_changed"]

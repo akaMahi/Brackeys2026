@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://13nx1yibj7bt"
-path="res://.godot/imported/Tilemap set road and sidewalk.png-199f3d313e1c86f3091dfe23ef438838.ctex"
+uid="uid://cfjvjrcci272v"
+path="res://.godot/imported/main car 2.png-6230024d95c54801ec785e8df08eb6d9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Tilemap set road and sidewalk.png"
-dest_files=["res://.godot/imported/Tilemap set road and sidewalk.png-199f3d313e1c86f3091dfe23ef438838.ctex"]
+source_file="res://Sprites/main car 2.png"
+dest_files=["res://.godot/imported/main car 2.png-6230024d95c54801ec785e8df08eb6d9.ctex"]
 
 [params]
 

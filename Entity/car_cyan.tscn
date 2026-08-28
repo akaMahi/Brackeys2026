@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://sfl826fu6qcd"]
+
+[ext_resource type="Script" uid="uid://dkmmmd4gc7cib" path="res://Scripts/New_scripts/enemy_car.gd" id="1_s3ogg"]
+[ext_resource type="Texture2D" uid="uid://dt3uhkwfusr0o" path="res://Sprites/Cars/car_cyan.png" id="2_s3ogg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ip5e8"]
+size = Vector2(80.53604, 146.98967)
+
+[node name="EnemyCar" type="CharacterBody2D" unique_id=776114492]
+z_index = 2
+script = ExtResource("1_s3ogg")
+turn_speed = 5.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1466190467]
+position = Vector2(2, 3.000001)
+scale = Vector2(0.35487893, 0.35487893)
+texture = ExtResource("2_s3ogg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1931602732]
+position = Vector2(9.536743e-07, 0.9999981)
+rotation = -1.5707964
+scale = Vector2(1.3410146, 0.29934075)
+shape = SubResource("RectangleShape2D_ip5e8")

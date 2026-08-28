@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bs4ykt188ik74"
-path="res://.godot/imported/Cloudy.png-931136bbe0fa6d26538c1bc47f1b02a2.ctex"
+uid="uid://cr67gkcpksn2c"
+path="res://.godot/imported/car_light_blue.png-c2c95f2299932bc2c42e249324665034.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Cloudy.png"
-dest_files=["res://.godot/imported/Cloudy.png-931136bbe0fa6d26538c1bc47f1b02a2.ctex"]
+source_file="res://Sprites/Cars/car_light_blue.png"
+dest_files=["res://.godot/imported/car_light_blue.png-c2c95f2299932bc2c42e249324665034.ctex"]
 
 [params]
 

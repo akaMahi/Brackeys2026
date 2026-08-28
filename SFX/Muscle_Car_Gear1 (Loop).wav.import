@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bxrjl6k4cd0x3"
+path="res://.godot/imported/Muscle_Car_Gear1 (Loop).wav-e475de2921c70121749800225590f595.sample"
+
+[deps]
+
+source_file="res://SFX/Muscle_Car_Gear1 (Loop).wav"
+dest_files=["res://.godot/imported/Muscle_Car_Gear1 (Loop).wav-e475de2921c70121749800225590f595.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2
