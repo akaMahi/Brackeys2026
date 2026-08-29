@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d4ckjc7g0i2j3"]
 
-[ext_resource type="Script" uid="uid://c6q441pcamgji" path="res://Scripts/enemy_car.gd" id="1_nix1g"]
+[ext_resource type="Script" uid="uid://c6q441pcamgji" path="res://Scripts_tmp/enemy_car.gd" id="1_nix1g"]
 [ext_resource type="Texture2D" uid="uid://d2g562ek6ijoc" path="res://Sprites/Cars/car_grey.png" id="2_nix1g"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5ygt8"]
@@ -8,6 +8,7 @@ size = Vector2(79.044624, 150.33035)
 
 [node name="EnemyCar" type="CharacterBody2D" unique_id=776114492]
 z_index = 2
+rotation = 3.1415927
 script = ExtResource("1_nix1g")
 turn_speed = 5.0
 

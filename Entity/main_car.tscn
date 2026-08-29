@@ -1,41 +1,26 @@
 [gd_scene format=3 uid="uid://didopyw4p185v"]
 
-[ext_resource type="Script" uid="uid://dxyjdumkmgsns" path="res://Scripts/player_car.gd" id="1_33x2g"]
+[ext_resource type="Script" uid="uid://dseluq7akq16n" path="res://Scripts/car.gd" id="1_h52pu"]
 [ext_resource type="Texture2D" uid="uid://cfjvjrcci272v" path="res://Sprites/main car 2.png" id="2_h52pu"]
-[ext_resource type="AudioStream" uid="uid://bgrcxedeynxav" path="res://SFX/Muscle_Car_Gear0_Accelerate (Loop).wav" id="2_jofpt"]
-[ext_resource type="AudioStream" uid="uid://dy1q4fd3gt0wm" path="res://SFX/Tire_Screech-002.wav" id="3_ut8fc"]
-[ext_resource type="AudioStream" uid="uid://bqdqmu0huv366" path="res://SFX/Muscle_Car_ChangeGear-003.wav" id="4_ut8fc"]
-[ext_resource type="Script" uid="uid://b3aogkadlvvot" path="res://Scripts/New Scripts/player_detection_area.gd" id="6_xyrk8"]
+[ext_resource type="Script" uid="uid://b3aogkadlvvot" path="res://Scripts_tmp/New Scripts/player_detection_area.gd" id="6_xyrk8"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_33x2g"]
 radius = 10.914094
 height = 34.285713
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_rgkqe"]
-radius = 279.88602
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_y4dr7"]
+size = Vector2(1000, 500)
 
-[node name="Main Car" type="CharacterBody2D" unique_id=1656651013 groups=["player"]]
+[node name="Main Car" type="CharacterBody2D" unique_id=1656651013 node_paths=PackedStringArray("visual") groups=["player"]]
 scale = Vector2(2.4618762, 2.5)
-script = ExtResource("1_33x2g")
-acceleration = 200.0
-braking = 400.0
-friction = 100.0
-reverse_speed_mult = 0.8
-steer_speed_curve = 0.5
-skid_mark_color = Color(0.050980393, 0.050980393, 0.050980393, 0.7921569)
-engine_sound = ExtResource("2_jofpt")
-drift_sound = ExtResource("3_ut8fc")
-wall_damage_scales_with_speed = false
-knockback_strength = 0.1
-knockback_max_speed = 100.0
-knockback_rotation_kick = 0.4
-min_knockback_speed = 60.0
-crash_sound = ExtResource("4_ut8fc")
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1708404114]
-z_index = 2
-scale = Vector2(0.13670123, 0.1367012)
-texture = ExtResource("2_h52pu")
+script = ExtResource("1_h52pu")
+lane_count = 3
+lane_width = 200.0
+lane_left_action = "move_left"
+lane_right_action = "move_right"
+visual = NodePath("Visual")
+accelerate_action = "move_up"
+brake_action = "move_down"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=821721630]
 scale = Vector2(0.85600036, 1.4000001)
@@ -47,8 +32,14 @@ script = ExtResource("6_xyrk8")
 
 [node name="Detection_zone" type="CollisionShape2D" parent="Area2D" unique_id=836510502 groups=["player_detection"]]
 scale = Vector2(1.0000001, 1)
-shape = SubResource("CircleShape2D_rgkqe")
+shape = SubResource("RectangleShape2D_y4dr7")
 debug_color = Color(0.6784314, 0.48235294, 0.40392157, 0.29411766)
 
+[node name="Visual" type="Node2D" parent="." unique_id=1352663758]
+
+[node name="Sprite2D" type="Sprite2D" parent="Visual" unique_id=1708404114]
+z_index = 2
+scale = Vector2(0.13670126, 0.13670121)
+texture = ExtResource("2_h52pu")
+
 [connection signal="died" from="." to="." method="_on_died"]
-[connection signal="health_changed" from="." to="." method="_on_health_changed"]

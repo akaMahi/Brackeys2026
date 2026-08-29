@@ -9,7 +9,7 @@ class_name EnemyCar
 # another enemy car), it stops moving for a configurable amount of
 # time, then resumes its normal behavior.
 
-@export var speed: float = 260.0
+@export var speed: float = 700.0
 @export var traction: float = 6.0
 @export var player_group: String = "player"
 

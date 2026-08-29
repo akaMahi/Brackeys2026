@@ -1,5 +1,5 @@
 extends Area2D
-class_name CameraBox
+class_name CameraBoxArea
 
 # One "fixed view" for the camera-box system in camera.gd.
 #
@@ -13,7 +13,7 @@ class_name CameraBox
 # 4. Set this Area2D's collision MASK to include whichever layer your
 #    player's car is on — otherwise body_entered never fires.
 
-signal player_entered(box: CameraBox)
+signal player_entered(box: CameraBoxArea)
 
 @export var player_group: String = "player" # the car must be in this group to trigger the box
 @export var fallback_size: Vector2 = Vector2(960, 540) # used only if no RectangleShape2D is found
