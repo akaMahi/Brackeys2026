@@ -1,7 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://c7865ifb7ksp4"]
+[gd_scene format=3 uid="uid://c7865ifb7ksp4"]
 
 [ext_resource type="Texture2D" uid="uid://hcg1mc3kt34i" path="res://Sprites/icon.svg" id="1_a22dp"]
-[ext_resource type="Script" uid="uid://ci0opj4n2wwm4" path="res://Scripts/New_scripts/health_pickup.gd" id="1_s3hhi"]
+[ext_resource type="Script" uid="uid://bh02hi7mtsaw5" path="res://Scripts/health_pickup.gd" id="1_s3hhi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s3hhi"]
 size = Vector2(59, 62)

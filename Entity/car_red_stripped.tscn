@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b87tuxay1lino"]
 
-[ext_resource type="Script" uid="uid://dkmmmd4gc7cib" path="res://Scripts/New_scripts/enemy_car.gd" id="1_4hsdh"]
+[ext_resource type="Script" uid="uid://c6q441pcamgji" path="res://Scripts/enemy_car.gd" id="1_4hsdh"]
 [ext_resource type="Texture2D" uid="uid://dl1om2iha5wo5" path="res://Sprites/Cars/car_red_stripped.png" id="2_4hsdh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b6h5m"]

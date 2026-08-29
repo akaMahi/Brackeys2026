@@ -1,15 +1,16 @@
 [gd_scene format=3 uid="uid://bulfissn2ee5r"]
 
-[ext_resource type="Script" uid="uid://dkmmmd4gc7cib" path="res://Scripts/New_scripts/enemy_car.gd" id="1_00mou"]
+[ext_resource type="Script" uid="uid://c6q441pcamgji" path="res://Scripts/enemy_car.gd" id="1_00mou"]
 [ext_resource type="Texture2D" uid="uid://csl1hmdws2hjx" path="res://Sprites/Cars/car_yellow.png" id="2_00mou"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4bkab"]
 size = Vector2(84.26456, 160.35239)
 
-[node name="EnemyCar" type="CharacterBody2D" unique_id=776114492]
+[node name="EnemyCar" type="CharacterBody2D" unique_id=776114492 groups=["enemy_car"]]
 z_index = 2
 script = ExtResource("1_00mou")
 turn_speed = 5.0
+wall_damage_scales_with_speed = false
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1466190467]
 position = Vector2(2, 3.000001)

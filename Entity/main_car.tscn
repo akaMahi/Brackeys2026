@@ -1,14 +1,18 @@
 [gd_scene format=3 uid="uid://didopyw4p185v"]
 
-[ext_resource type="Script" uid="uid://du6bfe5f68qxf" path="res://Scripts/New_scripts/player_car_new.gd" id="1_33x2g"]
+[ext_resource type="Script" uid="uid://dxyjdumkmgsns" path="res://Scripts/player_car.gd" id="1_33x2g"]
 [ext_resource type="Texture2D" uid="uid://cfjvjrcci272v" path="res://Sprites/main car 2.png" id="2_h52pu"]
 [ext_resource type="AudioStream" uid="uid://bgrcxedeynxav" path="res://SFX/Muscle_Car_Gear0_Accelerate (Loop).wav" id="2_jofpt"]
 [ext_resource type="AudioStream" uid="uid://dy1q4fd3gt0wm" path="res://SFX/Tire_Screech-002.wav" id="3_ut8fc"]
 [ext_resource type="AudioStream" uid="uid://bqdqmu0huv366" path="res://SFX/Muscle_Car_ChangeGear-003.wav" id="4_ut8fc"]
+[ext_resource type="Script" uid="uid://b3aogkadlvvot" path="res://Scripts/New Scripts/player_detection_area.gd" id="6_xyrk8"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_33x2g"]
 radius = 10.914094
 height = 34.285713
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rgkqe"]
+radius = 279.88602
 
 [node name="Main Car" type="CharacterBody2D" unique_id=1656651013 groups=["player"]]
 scale = Vector2(2.4618762, 2.5)
@@ -21,8 +25,11 @@ steer_speed_curve = 0.5
 skid_mark_color = Color(0.050980393, 0.050980393, 0.050980393, 0.7921569)
 engine_sound = ExtResource("2_jofpt")
 drift_sound = ExtResource("3_ut8fc")
+wall_damage_scales_with_speed = false
 knockback_strength = 0.1
-knockback_rotation_kick = 0.2
+knockback_max_speed = 100.0
+knockback_rotation_kick = 0.4
+min_knockback_speed = 60.0
 crash_sound = ExtResource("4_ut8fc")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1708404114]
@@ -33,6 +40,15 @@ texture = ExtResource("2_h52pu")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=821721630]
 scale = Vector2(0.85600036, 1.4000001)
 shape = SubResource("CapsuleShape2D_33x2g")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=798626517 groups=["player_detection"]]
+z_index = -2
+script = ExtResource("6_xyrk8")
+
+[node name="Detection_zone" type="CollisionShape2D" parent="Area2D" unique_id=836510502 groups=["player_detection"]]
+scale = Vector2(1.0000001, 1)
+shape = SubResource("CircleShape2D_rgkqe")
+debug_color = Color(0.6784314, 0.48235294, 0.40392157, 0.29411766)
 
 [connection signal="died" from="." to="." method="_on_died"]
 [connection signal="health_changed" from="." to="." method="_on_health_changed"]

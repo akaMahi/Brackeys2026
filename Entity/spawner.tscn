@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://c3ec8s6wpky0m"]
+
+[ext_resource type="Script" uid="uid://cny6qb20u55sk" path="res://Scripts/New Scripts/car_spawner.gd" id="1_nb7ja"]
+[ext_resource type="PackedScene" uid="uid://c7865ifb7ksp4" path="res://Entity/health_pickup.tscn" id="2_82gs6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sqvhu"]
+
+[node name="Area2D" type="Area2D" unique_id=131222922]
+script = ExtResource("1_nb7ja")
+what_to_spawn = ExtResource("2_82gs6")
+continuous_spawning = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817789061]
+shape = SubResource("CircleShape2D_sqvhu")

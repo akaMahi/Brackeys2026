@@ -1,20 +1,27 @@
 extends CarBase
 
-# ── Player-specific: input, engine/steering/traction, drift marks, the
-# detection radius spawners sense, and sound (engine + drift). Health,
-# collision damage, knockback, and crash sound all live in car_base.gd.
+# ── Player-specific: input, engine/steering/traction, drift marks, and
+# sound (engine + drift). Health, collision damage, knockback, and crash
+# sound all live in car_base.gd — see that file for those.
+#
+# The player's "detection radius" that spawners react to now lives in its
+# own script (player_detection_area.gd), on a child node you place and
+# size yourself in the editor with a real CollisionShape2D — it used to
+# be built here from a plain number at runtime, which meant you couldn't
+# see or directly edit it. See player_detection_area.gd for setup.
 
 @export_group("Engine")
 @export var max_speed: float = 600.0
-@export var acceleration: float = 900.0 # how fast you reach max speed
-@export var braking: float = 1400.0 # deceleration when reversing input
-@export var friction: float = 500.0 # deceleration with no input (coasting)
-@export var reverse_speed_mult: float = 0.5 # reverse is slower than forward
+@export var acceleration: float = 900.0
+@export var reverse_max_speed: float = 300.0
+@export var reverse_acceleration: float = 600.0
+@export var braking: float = 1400.0
+@export var friction: float = 500.0
 
 @export_group("Steering")
 @export var max_steer_angle: float = 3.2 # radians/sec at full lock, low speed
 @export var min_speed_to_steer: float = 20.0 # below this, steering does nothing (no pivoting in place)
-@export var steer_speed_curve: float = 0.6 # how much steering falls off as speed rises
+@export var steer_speed_curve: float = 0.6 # how much steering falls off as speed rises (0=no falloff, 1=heavy falloff)
 
 @export_group("Grip / Drift")
 @export var traction_normal: float = 12.0 # how fast velocity aligns to facing (higher = grippier)
@@ -29,10 +36,6 @@ extends CarBase
 @export var skid_mark_min_point_distance: float = 4.0 # skip points closer together than this
 @export var skid_mark_z_index: int = 1 # must be above your TileMap's z_index
 @export var max_skid_marks: int = 40 # oldest mark lines are freed once this many exist
-
-@export_group("Detection Radius")
-@export var detection_radius: float = 900.0 # how far spawners can "sense" this car
-@export var detection_layer: int = 1 # the layer OTHER Area2Ds (spawners) need in their mask to detect this
 
 @export_group("Sound")
 @export var engine_sound: AudioStream # a short, seamless loop — enable Loop in its Import settings
@@ -51,7 +54,6 @@ var _skid_marks: Array[Line2D] = []
 var _active_left_mark: Line2D = null
 var _active_right_mark: Line2D = null
 
-var _detection_area: Area2D
 var _engine_player: AudioStreamPlayer2D
 var _drift_player: AudioStreamPlayer2D
 
@@ -59,8 +61,6 @@ var _drift_player: AudioStreamPlayer2D
 func _ready() -> void:
 	group_tag = "player"
 	car_ready()
-
-	_setup_detection_area()
 	_setup_sound()
 
 
@@ -87,22 +87,69 @@ func _read_input() -> void:
 
 
 func _apply_engine_force(delta: float) -> void:
-	var forward_dir := Vector2.UP.rotated(rotation)
-	var current_forward_speed := velocity.dot(forward_dir)
+	var forward_dir: Vector2 = Vector2.UP.rotated(rotation)
+	var current_forward_speed: float = velocity.dot(forward_dir)
 
-	if forward_input != 0.0:
-		var target_speed := max_speed * forward_input
-		if forward_input < 0:
-			target_speed *= reverse_speed_mult
+	if forward_input > 0.0:
+		# -------------------------
+		# FORWARD
+		# -------------------------
+		var target_speed: float = max_speed * forward_input
 
-		var accel_rate: float = acceleration if forward_input > 0 else braking
-		var new_forward_speed: float = move_toward(current_forward_speed, target_speed, accel_rate * delta)
-		velocity += forward_dir * (new_forward_speed - current_forward_speed)
+		# If currently moving backwards, brake toward 0 first.
+		if current_forward_speed < 0.0:
+			var new_speed: float = move_toward(
+				current_forward_speed,
+				0.0,
+				braking * delta
+			)
+			velocity += forward_dir * (new_speed - current_forward_speed)
+		else:
+			var new_speed: float = move_toward(
+				current_forward_speed,
+				target_speed,
+				acceleration * delta
+			)
+			velocity += forward_dir * (new_speed - current_forward_speed)
+
+	elif forward_input < 0.0:
+		# -------------------------
+		# REVERSE
+		# -------------------------
+		var target_speed: float = -reverse_max_speed * abs(forward_input)
+
+		# If currently moving forward, brake toward 0 first.
+		if current_forward_speed > 0.0:
+			var new_speed: float = move_toward(
+				current_forward_speed,
+				0.0,
+				braking * delta
+			)
+			velocity += forward_dir * (new_speed - current_forward_speed)
+		else:
+			# Once stopped or already moving backwards,
+			# use the dedicated reverse acceleration.
+			var new_speed: float = move_toward(
+				current_forward_speed,
+				target_speed,
+				reverse_acceleration * delta
+			)
+			velocity += forward_dir * (new_speed - current_forward_speed)
+
 	else:
-		# Coast to a stop with friction
-		var decel: float = min(friction * delta, abs(current_forward_speed))
-		velocity -= forward_dir * decel * sign(current_forward_speed)
+		# -------------------------
+		# NO INPUT — COAST
+		# -------------------------
+		var decel: float = min(
+			friction * delta,
+			abs(current_forward_speed)
+		)
 
+		velocity -= (
+			forward_dir
+			* decel
+			* sign(current_forward_speed)
+		)
 
 func _apply_steering(delta: float) -> void:
 	var speed := velocity.length()
@@ -121,19 +168,32 @@ func _apply_steering(delta: float) -> void:
 
 
 func _apply_traction(delta: float) -> void:
-	# This is THE key to good car feel: blend current velocity toward
-	# the direction the car is facing. High traction = grippy arcade car.
-	# Low traction (while drifting) = velocity keeps its old direction
-	# while the car rotates, creating a slide.
+	# Align velocity with the direction the car is facing while
+	# preserving whether the car is moving FORWARD or BACKWARD.
+
 	var forward_dir := Vector2.UP.rotated(rotation)
-	var speed := velocity.length()
-	if speed < 1.0:
+
+	# Signed speed:
+	#   positive = moving forward
+	#   negative = moving backward
+	var signed_speed := velocity.dot(forward_dir)
+
+	if abs(signed_speed) < 1.0:
+		# Remove tiny residual movement.
+		velocity = Vector2.ZERO
 		return
 
 	var current_traction := traction_drift if is_drifting else traction_normal
-	var target_velocity := forward_dir * speed
-	velocity = velocity.lerp(target_velocity, clamp(current_traction * delta, 0.0, 1.0))
 
+	# IMPORTANT:
+	# Keep the sign of signed_speed.
+	# This allows traction to align the car backward when reversing.
+	var target_velocity := forward_dir * signed_speed
+
+	velocity = velocity.lerp(
+		target_velocity,
+		clamp(current_traction * delta, 0.0, 1.0)
+	)
 
 # ── Drift marks (Line2D, not particles) ──────────────────
 
@@ -180,23 +240,6 @@ func _add_mark_point(line: Line2D, world_point: Vector2) -> void:
 		if last_point.distance_to(world_point) < skid_mark_min_point_distance:
 			return
 	line.add_point(world_point)
-
-
-# ── Detection radius (for spawners to sense the car) ─────
-
-func _setup_detection_area() -> void:
-	_detection_area = Area2D.new()
-	_detection_area.collision_layer = detection_layer
-	_detection_area.monitoring = false # this side never needs to detect anything, only BE detected
-	_detection_area.monitorable = true
-
-	var shape := CollisionShape2D.new()
-	var circle := CircleShape2D.new()
-	circle.radius = detection_radius
-	shape.shape = circle
-	_detection_area.add_child(shape)
-
-	add_child(_detection_area)
 
 
 # ── Sound ──────────────────────────────────────────────────

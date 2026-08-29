@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dhabehrah2ede"]
 
-[ext_resource type="Script" uid="uid://dkmmmd4gc7cib" path="res://Scripts/New_scripts/enemy_car.gd" id="1_kwc70"]
+[ext_resource type="Script" uid="uid://c6q441pcamgji" path="res://Scripts/enemy_car.gd" id="1_kwc70"]
 [ext_resource type="Texture2D" uid="uid://bu0aewkmpbdad" path="res://Sprites/Cars/car_red.png" id="2_kwc70"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b6h5m"]

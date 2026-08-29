@@ -28,6 +28,9 @@ window/stretch/aspect="expand"
 
 camera_box=""
 player=""
+enemy_car=""
+player_detection=""
+wall=""
 
 [input]
 
